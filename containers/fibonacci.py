@@ -1,4 +1,3 @@
-
 ################################################################################
 # example fibonacci number code;
 # you do not have to modify this code in any way
@@ -60,12 +59,42 @@ class Fib:
     >>> list(Fib(5))
     [1, 1, 2, 3, 5]
     '''
+    def __init__(self, n = None):
+        self.n = n
+    
+
+    def __repr__(self):
+        return f"Fib({self.n or ''})"
+
+    def __iter__(self):
+        return FibIter(self.n)
 
 
 class FibIter:
     '''
     This is the iterator helper class for the Fib class.
     '''
+    def __init__(self, n):
+        self.n = n
+        self.i = 1 
+        self.result = 1
+        self.previous_result = 1
+
+
+    def __next__(self):
+        if self.n and self.i > self.n:
+            raise StopIteration
+        else:
+            if self.i <= 2:
+                self.i += 1
+                return 1
+            else:
+                self.i += 1
+                self.new_result = self.result + self.previous_result
+                self.previous_result = self.result
+                self.result = self.new_result
+                return self.result
+            
 
 
 def fib_yield(n=None):
@@ -73,3 +102,17 @@ def fib_yield(n=None):
     This function returns a generator that computes the first n fibonacci numbers.
     If n is None, then the generator is infinite.
     '''
+    num_1 = 1
+    num_2 = 1
+    i = 1
+    while 1:
+        if i <= 2:
+            yield 1
+        else:
+            sum_1 = num_1 + num_2
+            num_2 = num_1
+            num_1 = sum_1
+            yield sum_1
+        if n and i >= n:
+            break
+        i += 1
