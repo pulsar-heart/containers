@@ -59,9 +59,9 @@ class Fib:
     >>> list(Fib(5))
     [1, 1, 2, 3, 5]
     '''
-    def __init__(self, n = None):
+    def __init__(self, n=None):
         self.n = n
-    
+
     def __repr__(self):
         return f"Fib({self.n or ''})"
 
@@ -75,10 +75,9 @@ class FibIter:
     '''
     def __init__(self, n):
         self.n = n
-        self.i = 1 
+        self.i = 1
         self.result = 1
         self.previous_result = 1
-
 
     def __next__(self):
         if self.n and self.i > self.n:
@@ -94,7 +93,6 @@ class FibIter:
                 self.result = self.new_result
                 return self.result
             
-
 
 def fib_yield(n=None):
     '''
