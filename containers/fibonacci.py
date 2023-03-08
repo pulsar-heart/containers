@@ -62,7 +62,6 @@ class Fib:
     def __init__(self, n = None):
         self.n = n
     
-
     def __repr__(self):
         return f"Fib({self.n or ''})"
 
