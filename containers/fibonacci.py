@@ -92,7 +92,7 @@ class FibIter:
                 self.previous_result = self.result
                 self.result = self.new_result
                 return self.result
-            
+   
 
 def fib_yield(n=None):
     '''
