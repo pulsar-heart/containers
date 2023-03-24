@@ -122,17 +122,17 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if traversal_type == 'preorder':
-              return BinaryTree.check(self.preorder(self.root, []))
+            return BinaryTree.check(self.preorder(self.root, []))
         elif traversal_type == 'inorder':
-              return BinaryTree.check(self.inorder(self.root, []))
+            return BinaryTree.check(self.inorder(self.root, []))
         elif traversal_type == 'postorder':
-              return BinaryTree.check(self.postorder(self.root, []))
+            return BinaryTree.check(self.postorder(self.root, []))
         else:
-              raise ValueError('Traversal type ' + str(traversal_type) + ' is not supported.')
+            raise ValueError('Traversal type ' + str(traversal_type) + ' is not supported.')
 
     @staticmethod
     def check(list1):
-        list2 = [x for x in list1 if x != None]
+        list2 = [x for x in list1 if x is not None]
         return list2
 
     def preorder(self, start, traversal):
@@ -141,11 +141,10 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if start:
-              traversal += list(start.value)
-              traversal = list(self.preorder(start.left, traversal))
-              traversal = list(self.preorder(start.right, traversal))
+            traversal += list(start.value)
+            traversal = list(self.preorder(start.left, traversal))
+            traversal = list(self.preorder(start.right, traversal))
         return traversal
-
 
     def inorder(self, start, traversal):
         '''
@@ -153,11 +152,10 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if start:
-              traversal = list(self.inorder(start.left, traversal))
-              traversal += [start.value]
-              traversal = list(self.inorder(start.right, traversal))
+            traversal = list(self.inorder(start.left, traversal))
+            traversal += [start.value]
+            traversal = list(self.inorder(start.right, traversal))
         return traversal
-
 
     def postorder(self, start, traversal):
         '''
@@ -165,11 +163,10 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if start:
-             traversal = list(self.postorder(start.left, traversal))
-             traversal = list(self.postorder(start.right, traversal))
-             traversal += list(start.value)
+            traversal = list(self.postorder(start.left, traversal))
+            traversal = list(self.postorder(start.right, traversal))
+            traversal += list(start.value)
         return traversal
-
 
     def __len__(self):
         '''
@@ -191,7 +188,7 @@ class BinaryTree():
         if a right child exists, add the result of __len__helper on the right child;
         return the sum of these three steps
         '''
-        if node == None:
+        if node is None:
             return 0
         length = 1
         if node.left:
@@ -199,7 +196,6 @@ class BinaryTree():
         if node.right:
             length += BinaryTree.__len__helper(node.right)
         return length
-
 
     def height(self):
         '''
@@ -214,7 +210,6 @@ class BinaryTree():
         '''
         return BinaryTree.height(self.root)
 
-
     @staticmethod
     def _height(node):
         '''
@@ -228,7 +223,7 @@ class BinaryTree():
         return 1 (for the current node) plus the max of the left and right _heights calculated above
         '''
         if node.left:
-            height_left = _height(node.left)
+            height_left = BinaryTree._height(node.left)
         if node.right:
-            height_right = _height(node.right)
+            height_right = BinaryTree._height(node.right)
         return 1 + max(height_left, height_right)

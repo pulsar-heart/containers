@@ -43,7 +43,7 @@ class BST(BinaryTree):
 
     def __iter__(self, traversal_type = 'inorder'):
         yield from self.to_list(traversal_type)
-        
+
     def is_bst_satisfied(self):
         '''
         Whenever you implement a data structure,
@@ -55,8 +55,6 @@ class BST(BinaryTree):
         if self.root:
             return BST._is_bst_satisfied(self.root)
         return True
-
-        return ret
 
     def insert(self, value):
         '''
@@ -85,7 +83,6 @@ class BST(BinaryTree):
                 BST._insert(node.right, value)
             else:
                 node.right = Node(value)
-
 
     def insert_list(self, xs):
         '''
@@ -125,7 +122,6 @@ class BST(BinaryTree):
         FIXME:
         Implement this function.
         '''
-        ret = False
         if node.value == value:
             return True
         if node.left:
@@ -196,7 +192,7 @@ class BST(BinaryTree):
         HINT:
         Use a recursive helper function.
         '''
-        if self.root == None:
+        if self.root is None:
             return
         if self.root.value == value and not self.root.left and not self.root.right:
             self.root = None
@@ -205,11 +201,7 @@ class BST(BinaryTree):
 
     @staticmethod
     def _remove(node, value):
-        print('in remove')
-        print(value)
-        print(node)
         new_node = BST._remove_helper(node, value)
-        print(new_node)
         node.value = new_node.value
         node.left = new_node.left
         node.right = new_node.right
@@ -218,19 +210,13 @@ class BST(BinaryTree):
     @staticmethod
     def _remove_helper(node, value):
         if node.value == value:
-            print('in if 1')
-            if node.left == None and node.right == None:
-                print('in if none')
+            if node.left is None and node.right is None:
                 return
-            elif node.left and node.right == None:
-                print('in elif left')
+            elif node.left and node.right is None:
                 return node.left
-            elif node.right and node.left == None:
-                print('in elif right')
-                print(node.right)
+            elif node.right and node.left is None:
                 return node.right
             else:
-                print('in else')
                 succ = BST.find_successor(node)
                 if succ == value:
                     node.right = BST._remove_helper(node.right, value)
@@ -282,7 +268,6 @@ class BST(BinaryTree):
             for x in xs:
                 self.remove(x)
 
-
     @staticmethod
     def _is_bst_satisfied(node):
         '''
@@ -296,7 +281,7 @@ class BST(BinaryTree):
         You should use the _ prefixed methods because those are static methods just like this one.
         '''
         ret = True
-        if node.value == None:
+        if node.value is None:
             if node.left or node.right:
                 return False
             else:
@@ -307,9 +292,9 @@ class BST(BinaryTree):
             else:
                 ret = False
         if node.right:
-            if node.value == None:
+            if node.value is None:
                 raise ValueError('value is none')
-            if BST._find_smallest(node.right) == None:
+            if BST._find_smallest(node.right) is None:
                 raise ValueError('find smallest is none', str(node.right))
             if node.value <= BST._find_smallest(node.right):
                 ret &= BST._is_bst_satisfied(node.right)
