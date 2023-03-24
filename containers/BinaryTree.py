@@ -1,5 +1,5 @@
 '''
-This file implements the Node and BinaryTree classes.
+Change.
 These two classes are the building blocks for the BST, AVLTree, and Heap data structures.
 It is crucial to get these implemented correctly in order to be able to implement the other data structures.
 '''
