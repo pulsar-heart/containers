@@ -141,7 +141,7 @@ class BinaryTree():
         Implement this function by modifying the _print functions above.
         '''
         if start:
-            traversal += list(start.value)
+            traversal += [start.value]
             traversal = list(self.preorder(start.left, traversal))
             traversal = list(self.preorder(start.right, traversal))
         return traversal
@@ -208,7 +208,10 @@ class BinaryTree():
         HINT:
         See how the __len__ method calls its helper staticmethod.
         '''
-        return BinaryTree.height(self.root)
+        if self.root:
+            return BinaryTree._height(self.root)
+        else:
+            return -1 
 
     @staticmethod
     def _height(node):
@@ -222,8 +225,12 @@ class BinaryTree():
         if a right child exists, calculate the _height of the right child;
         return 1 (for the current node) plus the max of the left and right _heights calculated above
         '''
+        height_left = 0
+        height_right = 0
         if node.left:
             height_left = BinaryTree._height(node.left)
         if node.right:
             height_right = BinaryTree._height(node.right)
+        if node.left is None and node.right is None:
+            return 0
         return 1 + max(height_left, height_right)
