@@ -41,7 +41,7 @@ class BST(BinaryTree):
         '''
         return type(self).__name__ + '(' + str(self.to_list('inorder')) + ')'
 
-    def __iter__(self, traversal_type = 'inorder'):
+    def __iter__(self, traversal_type='inorder'):
         yield from self.to_list(traversal_type)
 
     def is_bst_satisfied(self):
@@ -205,8 +205,7 @@ class BST(BinaryTree):
         node.value = new_node.value
         node.left = new_node.left
         node.right = new_node.right
-        
-    
+
     @staticmethod
     def _remove_helper(node, value):
         if node.value == value:
@@ -220,7 +219,7 @@ class BST(BinaryTree):
                 succ = BST.find_successor(node)
                 if succ == value:
                     node.right = BST._remove_helper(node.right, value)
-                else: 
+                else:
                     BST._remove(node, succ)
                 new_node = Node(succ)
                 new_node.left = node.left
