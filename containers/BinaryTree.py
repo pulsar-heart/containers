@@ -211,7 +211,7 @@ class BinaryTree():
         if self.root:
             return BinaryTree._height(self.root)
         else:
-            return -1 
+            return -1
 
     @staticmethod
     def _height(node):
