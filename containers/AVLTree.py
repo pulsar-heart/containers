@@ -66,7 +66,6 @@ class AVLTree(BST):
         is_left_avl = AVLTree._is_avl_satisfied(node.left)
         is_right_avl = AVLTree._is_avl_satisfied(node.right)
         return is_left_avl and is_right_avl
-        
 
     @staticmethod
     def _left_rotate(node):
@@ -84,7 +83,6 @@ class AVLTree(BST):
         rot_root.right = new_root.left
         new_root.left = rot_root
         return new_root
-
 
     @staticmethod
     def _right_rotate(node):
@@ -127,7 +125,6 @@ class AVLTree(BST):
         AVLTree._recurse_children(value, node)
         bool1 = AVLTree._is_avl_satisfied(node)
 
-
     @staticmethod
     def _recurse_children(value, node):
         if node is None:
@@ -149,7 +146,6 @@ class AVLTree(BST):
             node.left = balanced_node.left
             node.right = balanced_node.right
             AVLTree._recurse_children('do', node)
-
 
     @staticmethod
     def _rebalance(node):
