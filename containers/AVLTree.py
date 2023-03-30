@@ -118,44 +118,37 @@ class AVLTree(BST):
         The code should look very similar to the code for your insert function for the BST,
         but it will also call the left and right rebalancing functions.
         '''
-        #print('inserting', value)
         node = self.root
         if node is None:
             node = Node(value)
             self.root = node
             return
         BST._insert(node, value)
-        #print(node)
         AVLTree._recurse_children(value, node)
+        bool1 = AVLTree._is_avl_satisfied(node)
 
 
     @staticmethod
     def _recurse_children(value, node):
-        #print('in recurse')
         if node is None:
             return
         AVLTree._check_balance(node)
-        if BST._find(value, node.left):
-            #print("in find left")
+        if value == 'do' or BST._find(value, node.left):
             AVLTree._check_balance(node.left)
             AVLTree._recurse_children(value, node.left)
-        if BST._find(value, node.right):
-            #print('in find right')
+        if value == 'do' or BST._find(value, node.right):
             AVLTree._check_balance(node.right)
             AVLTree._recurse_children(value, node.right)
 
     @staticmethod
     def _check_balance(node):
-        #print('in check balance')
         unbalanced = [-2, 2]
-        #print(node)
-        #print(AVLTree._balance_factor(node))
         if AVLTree._balance_factor(node) in unbalanced:
-            #print("unbalanced")
             balanced_node = AVLTree._rebalance(node)
             node.value = balanced_node.value
             node.left = balanced_node.left
             node.right = balanced_node.right
+            AVLTree._recurse_children('do', node)
 
 
     @staticmethod

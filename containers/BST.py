@@ -25,6 +25,26 @@ class BST(BinaryTree):
             for x in xs:
                 self.insert(x)
 
+    def __eq__(self, t2):
+        '''
+        This method checks to see if the contents of self and t2 are equal.
+        The expression `a==b` desugars to `a.__eq__(b)`.
+
+        NOTE:
+        We only care about "semantic" equality,
+        and not "syntactic" equality.
+        That is, we do not care about the tree structure itself, and only care about the contents of what the tree contains.
+
+        HINT:
+        Convert the contents of both trees into a sorted list, 
+        then compare those sorted lists for equality.
+        '''
+        sorted_list_1 = self.to_list('inorder')
+        sorted_list_2 = t2.to_list('inorder')
+        return sorted_list_1 == sorted_list_2
+
+
+
     def __repr__(self):
         '''
         Notice that in the BinaryTree class,
@@ -73,6 +93,9 @@ class BST(BinaryTree):
 
     @staticmethod
     def _insert(node, value):
+        if node is None:
+            node = Node(value)
+            return
         if value <= node.value:
             if node.left:
                 BST._insert(node.left, value)
@@ -122,6 +145,8 @@ class BST(BinaryTree):
         FIXME:
         Implement this function.
         '''
+        if node is None:
+            return False
         if node.value == value:
             return True
         if node.left:
