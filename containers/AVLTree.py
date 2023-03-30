@@ -8,6 +8,7 @@ from containers.BinaryTree import BinaryTree, Node
 from containers.BST import BST
 import copy
 
+
 class AVLTree(BST):
     '''
     FIXME:
@@ -123,7 +124,6 @@ class AVLTree(BST):
             return
         BST._insert(node, value)
         AVLTree._recurse_children(value, node)
-        bool1 = AVLTree._is_avl_satisfied(node)
 
     @staticmethod
     def _recurse_children(value, node):
