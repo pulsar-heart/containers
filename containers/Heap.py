@@ -30,7 +30,6 @@ class Heap(BinaryTree):
             for x in xs:
                 self.insert(x)
         
-
     def __repr__(self):
         '''
         Notice that in the BinaryTree class,
@@ -77,7 +76,6 @@ class Heap(BinaryTree):
         ret &= Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
         return ret
 
-        
     def _missing_child(node):
         if node.right:
             return False
@@ -87,7 +85,6 @@ class Heap(BinaryTree):
             if node.left.left or node.left.right:
                 return False
         return True
-
 
     def insert(self, value):
         '''
@@ -176,7 +173,6 @@ class Heap(BinaryTree):
                 parent.value = new_node.value
                 new_node.value = val1
         Heap._swap(node, binary[:-1])
-
 
     def insert_list(self, xs):
         '''
