@@ -26,6 +26,9 @@ class Heap(BinaryTree):
         '''
         self.size = 0
         super().__init__()
+        if xs:
+            for x in xs:
+                self.insert(x)
         
 
     def __repr__(self):
@@ -62,11 +65,13 @@ class Heap(BinaryTree):
         FIXME:
         Implement this method.
         '''
-        ret = False
+        ret = True
         if node is None:
             return True
         if node.right is None or node.left is None:
             ret &= Heap._missing_child(node)
+        elif node.left.value is None or node.right.value is None or node.value is None:
+            raise ValueError(node)
         elif node.left.value < node.value or node.right.value < node.value:
             return False
         ret &= Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
@@ -77,7 +82,7 @@ class Heap(BinaryTree):
         if node.right:
             return False
         elif node.left:
-            if node.left.value > node.value:
+            if node.left.value < node.value:
                 return False
             if node.left.left or node.left.right:
                 return False
@@ -103,23 +108,36 @@ class Heap(BinaryTree):
         Create a @staticmethod helper function,
         following the same pattern used in the BST and AVLTree insert functions.
         '''
-        if self is None:
-            self = Heap(value) #memory management
+        if self.root is None:
             self.root = Node(value)
-            self.size += 1
+            self.size = 1
             return
-        self.size += 1
+        self.size = Heap._size(self.root) + 1 
         if not self.is_heap_satisfied():
             raise ValueError('heap not satisfied')
         else:
-            binary = bin(self.size)[2:]
+            binary = bin(self.size)[3:]
             Heap._insert(self.root, binary, value)
             Heap._swap(self.root, binary)
+    
+    @staticmethod
+    def _size(node):
+        if node is None:
+            return 0
+        ret = 1
+        if node.left:
+            ret += Heap._size(node.left)
+        if node.right:
+            ret += Heap._size(node.right)
+        return ret
 
     @staticmethod
     def _insert(node, binary, value):
-        if not binary:
-            node.value = value
+        if len(binary) == 1:
+            if binary == '0':
+                node.left = Node(value)
+            else:
+                node.right = Node(value)
             return
         dig = binary[0]
         if dig == '0':
@@ -133,19 +151,30 @@ class Heap(BinaryTree):
     def _swap(node, binary):
         if Heap._is_heap_satisfied(node):
             return
-        if binary is None:
-            raise ValueError('binary is none')
-        new_node = node
-        for dig in binary:
-            parent = new_node
-            if dig == '0':
-                new_node = node.left
+        if not binary:
+            if node.value > node.left.value:
+                val1 = node.value
+                node.value = node.left.value
+                node.left.value = val1
+            elif node.value > node.right.value:
+                val1 = node.value
+                node.value = node.right.value
+                node.right.value = val1
             else:
-                new_node = node.right
-        if parent.value > new_node.value:
-            parent.value = val1
-            parent.value = new_node.value
-            new_node.value = val1
+                raise ValueError('binary is empty')
+                return
+        else:
+            new_node = node
+            for dig in binary:
+                parent = new_node
+                if dig == '0':
+                    new_node = new_node.left
+                else:
+                    new_node = new_node.right
+            if parent.value > new_node.value:
+                val1 = parent.value
+                parent.value = new_node.value
+                new_node.value = val1
         Heap._swap(node, binary[:-1])
 
 
@@ -166,11 +195,11 @@ class Heap(BinaryTree):
         FIXME:
         Implement this function.
         '''
-        if self is None:
+        if self.root is None:
             return
         else:
-            binary = bin(self.size)[2:]
-            return Heap._find_smallest(self.root, binary)
+            return self.root.value
+            
     @staticmethod
     def _find_smallest(node, binary):
         if not binary:
@@ -202,3 +231,47 @@ class Heap(BinaryTree):
         It's possible to do it with only a single helper (or no helper at all),
         but I personally found dividing up the code into two made the most sense.
         '''
+        if self.root is None:
+            return
+        elif self.root.left is None:
+            self.root = None
+        else:
+            size = Heap._size(self.root)
+            binary = bin(size)[3:]
+            self.root.value = Heap._remove(self.root, binary)
+            Heap._trickle_down(self.root)
+
+    @staticmethod
+    def _remove(node, binary):
+        if len(binary) == 1:
+            if binary == '0':
+                val1 = node.left.value
+                node.left = None
+                return val1
+            elif binary == '1':
+                val1 = node.right.value
+                node.right = None
+                return val1
+        else:
+            dig = binary[0]
+            if dig == '0':
+                return Heap._remove(node.left, binary[1:])
+            elif dig == '1':
+                return Heap._remove(node.right, binary[1:])
+            else:
+                raise ValueError('digit not valid')
+
+    @staticmethod
+    def _trickle_down(node):
+        if Heap._is_heap_satisfied(node):
+            return
+        if node.left and not node.right or node.left.value < node.right.value:
+            val1 = node.value
+            node.value = node.left.value
+            node.left.value = val1
+            Heap._trickle_down(node.left)
+        else:
+            val1 = node.value
+            node.value = node.right.value
+            node.right.value = val1
+            Heap._trickle_down(node.right)
