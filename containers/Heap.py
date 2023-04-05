@@ -196,7 +196,7 @@ class Heap(BinaryTree):
             return
         else:
             return self.root.value
-        
+
     @staticmethod
     def _find_smallest(node, binary):
         if not binary:
