@@ -10,7 +10,7 @@ This homework is using an explicit tree implementation to help you get more prac
 from containers.BinaryTree import BinaryTree, Node
 
 
-class Heap():
+class Heap(BinaryTree):
     '''
     FIXME:
     Heap is currently not a subclass of BinaryTree.
@@ -24,6 +24,9 @@ class Heap():
         If xs is a list (i.e. xs is not None),
         then each element of xs needs to be inserted into the Heap.
         '''
+        self.size = 0
+        super().__init__()
+        
 
     def __repr__(self):
         '''
@@ -59,6 +62,27 @@ class Heap():
         FIXME:
         Implement this method.
         '''
+        ret = False
+        if node is None:
+            return True
+        if node.right is None or node.left is None:
+            ret &= Heap._missing_child(node)
+        elif node.left.value < node.value or node.right.value < node.value:
+            return False
+        ret &= Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
+        return ret
+
+        
+    def _missing_child(node):
+        if node.right:
+            return False
+        elif node.left:
+            if node.left.value > node.value:
+                return False
+            if node.left.left or node.left.right:
+                return False
+        return True
+
 
     def insert(self, value):
         '''
@@ -79,6 +103,51 @@ class Heap():
         Create a @staticmethod helper function,
         following the same pattern used in the BST and AVLTree insert functions.
         '''
+        if self is None:
+            self = Heap(value) #memory management
+            self.root = Node(value)
+            self.size += 1
+            return
+        self.size += 1
+        if not self.is_heap_satisfied():
+            raise ValueError('heap not satisfied')
+        else:
+            binary = bin(self.size)[2:]
+            Heap._insert(self.root, binary, value)
+            Heap._swap(self.root, binary)
+
+    @staticmethod
+    def _insert(node, binary, value):
+        if not binary:
+            node.value = value
+            return
+        dig = binary[0]
+        if dig == '0':
+            Heap._insert(node.left, binary[1:], value)
+        elif dig == '1':
+            Heap._insert(node.right, binary[1:], value)
+        else:
+            raise ValueError('invalid character in binary')
+
+    @staticmethod
+    def _swap(node, binary):
+        if Heap._is_heap_satisfied(node):
+            return
+        if binary is None:
+            raise ValueError('binary is none')
+        new_node = node
+        for dig in binary:
+            parent = new_node
+            if dig == '0':
+                new_node = node.left
+            else:
+                new_node = node.right
+        if parent.value > new_node.value:
+            parent.value = val1
+            parent.value = new_node.value
+            new_node.value = val1
+        Heap._swap(node, binary[:-1])
+
 
     def insert_list(self, xs):
         '''
@@ -87,7 +156,9 @@ class Heap():
         FIXME:
         Implement this function.
         '''
-
+        for x in xs:
+            self.insert(x)
+    
     def find_smallest(self):
         '''
         Returns the smallest value in the tree.
@@ -95,6 +166,22 @@ class Heap():
         FIXME:
         Implement this function.
         '''
+        if self is None:
+            return
+        else:
+            binary = bin(self.size)[2:]
+            return Heap._find_smallest(self.root, binary)
+    @staticmethod
+    def _find_smallest(node, binary):
+        if not binary:
+            return node.value
+        dig = binary[0]
+        if dig == '0':
+            return Heap._find_smallest(node.left, binary[1:])
+        elif dig == '1':
+            return Heap._find_smallest(node.right, binary[1:])
+        else:
+            raise ValueError('invalid character in binary')
 
     def remove_min(self):
         '''
