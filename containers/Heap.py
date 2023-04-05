@@ -29,7 +29,7 @@ class Heap(BinaryTree):
         if xs:
             for x in xs:
                 self.insert(x)
-        
+
     def __repr__(self):
         '''
         Notice that in the BinaryTree class,
@@ -76,6 +76,7 @@ class Heap(BinaryTree):
         ret &= Heap._is_heap_satisfied(node.left) and Heap._is_heap_satisfied(node.right)
         return ret
 
+    @staticmethod
     def _missing_child(node):
         if node.right:
             return False
@@ -109,14 +110,14 @@ class Heap(BinaryTree):
             self.root = Node(value)
             self.size = 1
             return
-        self.size = Heap._size(self.root) + 1 
+        self.size = Heap._size(self.root) + 1
         if not self.is_heap_satisfied():
             raise ValueError('heap not satisfied')
         else:
             binary = bin(self.size)[3:]
             Heap._insert(self.root, binary, value)
             Heap._swap(self.root, binary)
-    
+
     @staticmethod
     def _size(node):
         if node is None:
@@ -183,7 +184,7 @@ class Heap(BinaryTree):
         '''
         for x in xs:
             self.insert(x)
-    
+
     def find_smallest(self):
         '''
         Returns the smallest value in the tree.
@@ -195,7 +196,7 @@ class Heap(BinaryTree):
             return
         else:
             return self.root.value
-            
+        
     @staticmethod
     def _find_smallest(node, binary):
         if not binary:
